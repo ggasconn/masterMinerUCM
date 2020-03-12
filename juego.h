@@ -14,10 +14,12 @@ typedef enum tTecla { ARRIBA, ABAJO, DCHA, IZQA, SALIR, NADA, TNT };
 
 typedef struct {
 	tMina estadoMina;
-	int gemas;
-	int nMovimientos;
-	int nDinamitas;
+	int gemas = 0;
+	int nMovimientos = 0;
+	int nDinamitas = 0;
 	int escalaJuego;
+	bool gameOver = false;
+	bool siguienteNivel = true;
 } tJuego;
 
 
@@ -31,6 +33,12 @@ typedef struct {
 */
 bool cargarJuego(tJuego& juego, int nivel);
 
+
+/*
+* Devuele la tecla pulsada por el usuario
+*/
+tTecla leerTecla();
+
 /*
 * TODO
 *
@@ -39,12 +47,14 @@ bool cargarJuego(tJuego& juego, int nivel);
 */
 bool hacerMovimiento(tJuego &juego, tTecla tecla);
 
+
 /*
 * TODO
 *
 * @param juego, matriz con los datos del juego
 */
 void dibujar(const tJuego& juego);
+
 
 /*
 * HELPER. Convierte un caracter en un dato del tipo tCasilla
@@ -53,11 +63,20 @@ void dibujar(const tJuego& juego);
 */
 tCasilla charToEnum(char c);
 
+
 /*
-* HELPER. Convierte un dato del tipo tCasilla a su respectivo string
+* HELPER. Convierte un dato del tipo tCasilla a su respectivo char
 *
 * @param c, caracter a convertir en tipo enumerado
 */
-string enumToString(tCasilla t);
+char enumToChar(tCasilla t);
+
+
+/*
+* HELPER. Cambiar el color de fondo de la consola. 0 vuelve a negro.
+*
+* @param fondo, color con el que se dibujara el fondo
+*/
+void cambiarColor(int fondo = 0);
 
 #endif	//Fin codigo modulo juego

@@ -62,4 +62,11 @@ void dibujar1_3(const tMina& mina);
 */
 void dibujar3x3(tCasilla casilla, tPlanoCaracteres caracteres, tPlanoColores colores, int i, int j);
 
+/*
+* HELPER. Devuelve el codigo de color de fondo acorde al caracter
+*
+* @param c, caracter a colorear
+*/
+int colorCaracter(char c);
+
 #endif	//Fin codigo modulo mina

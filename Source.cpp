@@ -7,18 +7,22 @@ using namespace std;
 
 int main() {
 	tJuego juego;
-	bool salir = false;
 	short int nivel = 1;
 
 	do {
 		if (!cargarJuego(juego, nivel)) {
 			cout << ">>> No se puede seguir jugando!" << endl;
-			salir = true;
+			juego.gameOver = true;
+		}else {
+			do {
+				dibujar(juego);
+				hacerMovimiento(juego, leerTecla());
+			} while (!juego.siguienteNivel);
+			nivel++;
 		}
-		else {
-			dibujar(juego);
-			salir = true;
-		}
-	} while (!salir);
+	} while (!juego.gameOver);
+
+	cout << "G A M E   O V E R !" << endl;
+
 	return 0;
 }
