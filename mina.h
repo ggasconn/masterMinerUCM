@@ -69,4 +69,5 @@ void dibujar3x3(tCasilla casilla, tPlanoCaracteres caracteres, tPlanoColores col
 */
 int colorCaracter(char c);
 
+
 #endif	//Fin codigo modulo mina
