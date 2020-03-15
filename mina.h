@@ -52,7 +52,7 @@ void dibujar1_1(const tMina& mina);
 void dibujar1_3(const tMina& mina);
 
 /*
-* Dibuja la casilla aumentada, añadiendo caracteres y colores en la coordenada ixj
+* Mete en la coordenada ixj el caracter y el color acorde al tipo de casilla que le llega
 *
 * @param
 * @param

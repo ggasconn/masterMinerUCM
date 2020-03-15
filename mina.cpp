@@ -62,6 +62,33 @@ void dibujar1_3(const tMina& mina) {
 
 
 void dibujar3x3(tCasilla casilla, tPlanoCaracteres caracteres, tPlanoColores colores, int i, int j) {
+	string s;
+	short int cont = 0;
+
+	switch (casilla) {
+		case GEMA:
+			s = "GEMA AMA_";
+			break;
+		case SALIDA:
+			s = "SALIDAESC";
+			break;
+		case MINERO:
+			s = "MI--NERO!";
+			break;
+		case DINAMITA:
+			s = "DINAMITA!";
+			break;
+		default:
+			break;
+	}
+
+	for (int k = i; k < 4; k++) {
+		for (int z = j; z < 4; z++) {
+			caracteres[i][j] = s[cont];
+			colores[i][j] = colorCaracter(casilla);
+			cont++;
+		}
+	}
 }
 
 

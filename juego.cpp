@@ -20,12 +20,63 @@ bool cargarJuego(tJuego& juego, int nivel) {
 	}
 	else {
 		cargarMina(fichero, juego.estadoMina);
-		juego.escalaJuego = 1; // CAMBIAR Y PREGUNTAR AL USUARIO
+		juego.escalaJuego = menuModoJuego();
 		juego.siguienteNivel = false;
 		cargado = true;
 	}
 
 	return cargado;
+}
+
+
+int menuModoJuego() {
+	int opcion = -1;
+
+	system("cls");
+	cout << "1.- Jugar partida a escala 1:1" << endl;
+	cout << "2.- Jugar partida a escala 1:3" << endl;
+	cout << "0.- Salir" << endl;
+
+	do {
+		cout << "Introduce una opcion: ";
+		cin >> opcion;
+	} while (opcion < 0 || opcion > 2);
+
+	return opcion;
+}
+
+
+int menuMovimientos() {
+	int opcion = -1;
+
+	system("cls");
+	cout << "Como quieres introducir los movimientos?" << endl;
+	cout << "1.- Teclado" << endl;
+	cout << "2.- Fichero" << endl;
+	cout << "0.- Salir" << endl;
+
+	do {
+		cout << "Introduce una opcion: ";
+		cin >> opcion;
+	} while (opcion < 0 || opcion > 2);
+
+	return opcion;
+}
+
+
+int menuSiguienteNivel() {
+	int opcion = -1;
+
+	system("cls");
+	cout << "1.- Jugar siguiente nivel" << endl;
+	cout << "0.- Salir" << endl;
+
+	do {
+		cout << "Introduce una opcion: ";
+		cin >> opcion;
+	} while (opcion < 0 || opcion > 1);
+
+	return opcion;
 }
 
 
@@ -74,111 +125,26 @@ tTecla leerTecla() {
 bool hacerMovimiento(tJuego& juego, tTecla tecla) {
 	bool realizado = false;
 
-	switch (tecla)
-	{
+	cout << "Coordenadas actuales: " << juego.estadoMina.fila << "x" << juego.estadoMina.columna << endl;
+
+	switch (tecla) {
 		case ARRIBA:
-			if (juego.estadoMina.planoMina[juego.estadoMina.fila - 1][juego.estadoMina.columna] != MURO && juego.estadoMina.fila - 1 >= 0) {
-				if (juego.estadoMina.planoMina[juego.estadoMina.fila - 1][juego.estadoMina.columna] == LIBRE \
-					|| juego.estadoMina.planoMina[juego.estadoMina.fila - 1][juego.estadoMina.columna] == TIERRA \
-					|| juego.estadoMina.planoMina[juego.estadoMina.fila - 1][juego.estadoMina.columna] == GEMA) {
-					juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna] = LIBRE;
-					juego.estadoMina.fila--;
-					juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna] = MINERO;
-
-					if (juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna] == GEMA) juego.gemas++;
-
-				}
-				else if (juego.estadoMina.planoMina[juego.estadoMina.fila - 1][juego.estadoMina.columna]) {
-					juego.siguienteNivel = true;
-				}
-			}
-			juego.nMovimientos++;
+			movimientoArriba(juego);
 			realizado = true;
 			break;
 
 		case ABAJO:
-			if (juego.estadoMina.planoMina[juego.estadoMina.fila + 1][juego.estadoMina.columna] != MURO && juego.estadoMina.fila + 1 < juego.estadoMina.nFilas) {
-				if (juego.estadoMina.planoMina[juego.estadoMina.fila + 1][juego.estadoMina.columna] == LIBRE \
-					|| juego.estadoMina.planoMina[juego.estadoMina.fila + 1][juego.estadoMina.columna] == TIERRA \
-					|| juego.estadoMina.planoMina[juego.estadoMina.fila + 1][juego.estadoMina.columna] == GEMA) {
-					juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna] = LIBRE;
-					juego.estadoMina.fila++;
-					juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna] = MINERO;
-
-					if (juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna] == GEMA) juego.gemas++;
-
-				}
-				else if (juego.estadoMina.planoMina[juego.estadoMina.fila + 1][juego.estadoMina.columna]) {
-					juego.siguienteNivel = true;
-				}
-			}
-			juego.nMovimientos++;
+			movimientoAbajo(juego);
 			realizado = true;
 			break;
 
 		case DCHA:
-			if (juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna + 1] != MURO \
-				&& juego.estadoMina.columna + 1 < juego.estadoMina.nColumnas) {
-				if (juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna + 1] == PIEDRA \
-					|| juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna + 1] == LIBRE \
-					|| juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna + 1] == TIERRA \
-					|| juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna + 1] == GEMA) {
-					if (juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna + 2] == LIBRE \
-						&& juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna + 1] == PIEDRA) {
-						int fila = juego.estadoMina.fila, columna = juego.estadoMina.columna + 2;
-						do {
-							fila++;
-						} while (juego.estadoMina.planoMina[fila][columna] == LIBRE && fila < juego.estadoMina.nFilas - 1);
-
-						juego.estadoMina.planoMina[fila][columna] = PIEDRA;
-					}
-
-					juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna] = LIBRE;
-					juego.estadoMina.columna++;
-					juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna] = MINERO;
-
-					if (juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna] == GEMA) {
-						juego.gemas++;
-					}
-				}
-				else if (juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna + 1] == SALIDA) {
-					juego.siguienteNivel = true;
-				}
-			}
-			juego.nMovimientos++;
+			movimientoDerecha(juego);
 			realizado = true;
 			break;
 
 		case IZQA:
-			if (juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna - 1] != MURO \
-				&& juego.estadoMina.columna + 1 < juego.estadoMina.nColumnas) {
-				if (juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna - 1] == PIEDRA \
-					|| juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna - 1] == LIBRE \
-					|| juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna - 1] == TIERRA \
-					|| juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna - 1] == GEMA) {
-					if (juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna - 2] == LIBRE \
-						&& juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna - 1] == PIEDRA) {
-						int fila = juego.estadoMina.fila, columna = juego.estadoMina.columna - 2;
-						do {
-							fila++;
-						} while (juego.estadoMina.planoMina[fila][columna] == LIBRE && fila < juego.estadoMina.nFilas - 1);
-
-						juego.estadoMina.planoMina[fila][columna] = PIEDRA;
-					}
-
-					juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna] = LIBRE;
-					juego.estadoMina.columna--;
-					juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna] = MINERO;
-
-					if (juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna] == GEMA) {
-						juego.gemas++;
-					}
-				}
-				else if (juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna - 1] == SALIDA) {
-					juego.siguienteNivel = true;
-				}
-			}
-			juego.nMovimientos++;
+			movimientoIzquierda(juego);
 			realizado = true;
 			break;
 
@@ -198,6 +164,113 @@ bool hacerMovimiento(tJuego& juego, tTecla tecla) {
 	return realizado;
 }
 
+void movimientoArriba(tJuego& juego) {
+	if (juego.estadoMina.planoMina[juego.estadoMina.fila - 1][juego.estadoMina.columna] != MURO && juego.estadoMina.fila - 1 >= 0) {
+		if (juego.estadoMina.planoMina[juego.estadoMina.fila - 1][juego.estadoMina.columna] == LIBRE \
+			|| juego.estadoMina.planoMina[juego.estadoMina.fila - 1][juego.estadoMina.columna] == TIERRA \
+			|| juego.estadoMina.planoMina[juego.estadoMina.fila - 1][juego.estadoMina.columna] == GEMA) {
+			if (juego.estadoMina.planoMina[juego.estadoMina.fila - 1][juego.estadoMina.columna] == GEMA) {
+				juego.gemas++;
+			}
+
+			juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna] = LIBRE;
+			juego.estadoMina.fila--;
+			juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna] = MINERO;
+		}
+		else if (juego.estadoMina.planoMina[juego.estadoMina.fila - 1][juego.estadoMina.columna]) {
+			juego.siguienteNivel = true;
+		}
+	}
+	juego.nMovimientos++;
+}
+
+
+void movimientoAbajo(tJuego& juego) {
+	if (juego.estadoMina.planoMina[juego.estadoMina.fila + 1][juego.estadoMina.columna] != MURO && juego.estadoMina.fila + 1 < juego.estadoMina.nFilas) {
+		if (juego.estadoMina.planoMina[juego.estadoMina.fila + 1][juego.estadoMina.columna] == LIBRE \
+			|| juego.estadoMina.planoMina[juego.estadoMina.fila + 1][juego.estadoMina.columna] == TIERRA \
+			|| juego.estadoMina.planoMina[juego.estadoMina.fila + 1][juego.estadoMina.columna] == GEMA) {
+			if (juego.estadoMina.planoMina[juego.estadoMina.fila + 1][juego.estadoMina.columna] == GEMA) {
+				juego.gemas++;
+			}
+
+			juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna] = LIBRE;
+			juego.estadoMina.fila++;
+			juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna] = MINERO;
+		}
+		else if (juego.estadoMina.planoMina[juego.estadoMina.fila + 1][juego.estadoMina.columna]) {
+			juego.siguienteNivel = true;
+		}
+	}
+	juego.nMovimientos++;
+}
+
+
+void movimientoDerecha(tJuego& juego) {
+	if (juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna + 1] != MURO \
+		&& juego.estadoMina.columna + 1 < juego.estadoMina.nColumnas) {
+		if (juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna + 1] == PIEDRA \
+			|| juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna + 1] == LIBRE \
+			|| juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna + 1] == TIERRA \
+			|| juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna + 1] == GEMA) {
+			if (juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna + 2] == LIBRE \
+				&& juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna + 1] == PIEDRA) {
+				int fila = juego.estadoMina.fila, columna = juego.estadoMina.columna + 2;
+				do {
+					fila++;
+				} while (juego.estadoMina.planoMina[fila][columna] == LIBRE && fila < juego.estadoMina.nFilas - 1);
+
+				juego.estadoMina.planoMina[fila][columna] = PIEDRA;
+			}
+
+			if (juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna + 1] == GEMA) {
+				juego.gemas++;
+			}
+
+			juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna] = LIBRE;
+			juego.estadoMina.columna++;
+			juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna] = MINERO;
+		}
+		else if (juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna + 1] == SALIDA) {
+			juego.siguienteNivel = true;
+		}
+	}
+	juego.nMovimientos++;
+}
+
+
+void movimientoIzquierda(tJuego& juego) {
+	if (juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna - 1] != MURO \
+		&& juego.estadoMina.columna - 1 < juego.estadoMina.nColumnas) {
+		if (juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna - 1] == PIEDRA \
+			|| juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna - 1] == LIBRE \
+			|| juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna - 1] == TIERRA \
+			|| juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna - 1] == GEMA) {
+			if (juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna - 2] == LIBRE \
+				&& juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna - 1] == PIEDRA) {
+				int fila = juego.estadoMina.fila, columna = juego.estadoMina.columna - 2;
+				do {
+					fila++;
+				} while (juego.estadoMina.planoMina[fila][columna] == LIBRE && fila < juego.estadoMina.nFilas - 1);
+
+				juego.estadoMina.planoMina[fila][columna] = PIEDRA;
+			}
+
+			if (juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna - 1] == GEMA) {
+				juego.gemas++;
+			}
+
+			juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna] = LIBRE;
+			juego.estadoMina.columna--;
+			juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna] = MINERO;
+
+		}
+		else if (juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna - 1] == SALIDA) {
+			juego.siguienteNivel = true;
+		}
+	}
+	juego.nMovimientos++;
+}
 
 void dibujar(const tJuego& juego) {
 	if (juego.escalaJuego == 1)

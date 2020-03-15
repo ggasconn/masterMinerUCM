@@ -33,11 +33,29 @@ typedef struct {
 */
 bool cargarJuego(tJuego& juego, int nivel);
 
+/*
+* Menu para elegir el modo de juego
+*/
+int menuModoJuego();
+
+
+/*
+* Menu para elegir como introducir los movimientos
+*/
+int menuMovimientos();
+
+
+/*
+* Menu para elegir si seguir jugando o salir del juego
+*/
+int menuSiguienteNivel();
+
 
 /*
 * Devuele la tecla pulsada por el usuario
 */
 tTecla leerTecla();
+
 
 /*
 * TODO
@@ -46,6 +64,11 @@ tTecla leerTecla();
 * @param tecla, tecla pulsada clasificada previamente
 */
 bool hacerMovimiento(tJuego &juego, tTecla tecla);
+
+void movimientoArriba(tJuego& juego);
+void movimientoAbajo(tJuego& juego);
+void movimientoDerecha(tJuego& juego);
+void movimientoIzquierda(tJuego& juego);
 
 
 /*
