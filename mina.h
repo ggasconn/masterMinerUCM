@@ -69,5 +69,12 @@ void dibujar3x3(tCasilla casilla, tPlanoCaracteres caracteres, tPlanoColores col
 */
 int colorCaracter(char c);
 
+/*
+* HELPER. Devuelve el codigo de color de fondo acorde al tipo de la casilla
+*
+* @param c, caracter a colorear
+*/
+int colorCasilla(tCasilla c);
+
 
 #endif	//Fin codigo modulo mina

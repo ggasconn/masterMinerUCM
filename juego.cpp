@@ -125,8 +125,6 @@ tTecla leerTecla() {
 bool hacerMovimiento(tJuego& juego, tTecla tecla) {
 	bool realizado = false;
 
-	cout << "Coordenadas actuales: " << juego.estadoMina.fila << "x" << juego.estadoMina.columna << endl;
-
 	switch (tecla) {
 		case ARRIBA:
 			movimientoArriba(juego);
@@ -211,7 +209,7 @@ void movimientoDerecha(tJuego& juego) {
 		&& juego.estadoMina.columna + 1 < juego.estadoMina.nColumnas) {
 		if (juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna + 1] == PIEDRA \
 			|| juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna + 1] == LIBRE \
-			|| juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna + 1] == TIERRA \
+			|| juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna + 1] == TIERRA 
 			|| juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna + 1] == GEMA) {
 			if (juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna + 2] == LIBRE \
 				&& juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna + 1] == PIEDRA) {
@@ -226,6 +224,11 @@ void movimientoDerecha(tJuego& juego) {
 			if (juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna + 1] == GEMA) {
 				juego.gemas++;
 			}
+
+			/*if (juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna + 1] == TIERRA \
+				&& juego.estadoMina.planoMina[juego.estadoMina.fila - 1][juego.estadoMina.columna + 1] == PIEDRA) {
+				cout << "HAY UNA PIEDRA ENCIMA" << endl;
+			}*/
 
 			juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna] = LIBRE;
 			juego.estadoMina.columna++;
