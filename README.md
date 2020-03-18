@@ -6,4 +6,4 @@ Version 1
 * [ ] Fix ESC key
 * [ ] Fix exit option via menu
 * [ ] Miner randomly eats rocks
-
+* [ ] Implement TNT usage
