@@ -149,6 +149,7 @@ bool hacerMovimiento(tJuego& juego, tTecla tecla) {
 		case SALIR:
 			realizado = true;
 			juego.gameOver = true;
+			juego.siguienteNivel = false;
 			break;
 
 		case NADA:
@@ -221,16 +222,22 @@ void movimientoDerecha(tJuego& juego) {
 				juego.estadoMina.planoMina[fila][columna] = PIEDRA;
 			}
 
+			juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna] = LIBRE;
+
+			if (juego.estadoMina.planoMina[juego.estadoMina.fila - 1][juego.estadoMina.columna] == PIEDRA) {
+				int filaPiedra = juego.estadoMina.fila - 1, colPiedra = juego.estadoMina.columna;
+				do {
+					filaPiedra++;
+				} while (juego.estadoMina.planoMina[filaPiedra][colPiedra] == LIBRE && filaPiedra < juego.estadoMina.nFilas);
+				
+				juego.estadoMina.planoMina[juego.estadoMina.fila - 1][juego.estadoMina.columna] = LIBRE;
+				juego.estadoMina.planoMina[filaPiedra - 1][colPiedra] = PIEDRA;
+			}
+
 			if (juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna + 1] == GEMA) {
 				juego.gemas++;
 			}
 
-			/*if (juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna + 1] == TIERRA \
-				&& juego.estadoMina.planoMina[juego.estadoMina.fila - 1][juego.estadoMina.columna + 1] == PIEDRA) {
-				cout << "HAY UNA PIEDRA ENCIMA" << endl;
-			}*/
-
-			juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna] = LIBRE;
 			juego.estadoMina.columna++;
 			juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna] = MINERO;
 		}
@@ -259,11 +266,22 @@ void movimientoIzquierda(tJuego& juego) {
 				juego.estadoMina.planoMina[fila][columna] = PIEDRA;
 			}
 
+			juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna] = LIBRE;
+
+			if (juego.estadoMina.planoMina[juego.estadoMina.fila - 1][juego.estadoMina.columna] == PIEDRA) {
+				int filaPiedra = juego.estadoMina.fila - 1, colPiedra = juego.estadoMina.columna;
+				do {
+					filaPiedra++;
+				} while (juego.estadoMina.planoMina[filaPiedra][colPiedra] == LIBRE && filaPiedra < juego.estadoMina.nFilas);
+
+				juego.estadoMina.planoMina[juego.estadoMina.fila - 1][juego.estadoMina.columna] = LIBRE;
+				juego.estadoMina.planoMina[filaPiedra - 1][colPiedra] = PIEDRA;
+			}
+
 			if (juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna - 1] == GEMA) {
 				juego.gemas++;
 			}
 
-			juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna] = LIBRE;
 			juego.estadoMina.columna--;
 			juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna] = MINERO;
 
