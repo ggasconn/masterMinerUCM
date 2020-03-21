@@ -9,7 +9,8 @@ using namespace std;
 
 
 bool cargarJuego(tJuego& juego, int nivel) {
-	bool cargado = true;
+	bool cargado = false;
+	int escalaJuego = 0;
 	string nombreFichero = to_string(nivel) + ".txt";
 	ifstream fichero;
 
@@ -17,12 +18,14 @@ bool cargarJuego(tJuego& juego, int nivel) {
 
 	if (!fichero.is_open()) {
 		cout << ">>> ERROR: No se pudo abrir el fichero" << endl;
-	}
-	else {
+	}else {
 		cargarMina(fichero, juego.estadoMina);
-		juego.escalaJuego = menuModoJuego();
-		juego.siguienteNivel = false;
-		cargado = true;
+		escalaJuego = menuModoJuego();
+		if (!escalaJuego == 0) {
+			juego.escalaJuego = escalaJuego;
+			juego.siguienteNivel = false;
+			cargado = true;
+		}
 	}
 
 	return cargado;
@@ -149,7 +152,6 @@ bool hacerMovimiento(tJuego& juego, tTecla tecla) {
 		case SALIR:
 			realizado = true;
 			juego.gameOver = true;
-			juego.siguienteNivel = false;
 			break;
 
 		case NADA:
@@ -212,26 +214,17 @@ void movimientoDerecha(tJuego& juego) {
 			|| juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna + 1] == LIBRE \
 			|| juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna + 1] == TIERRA 
 			|| juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna + 1] == GEMA) {
+			// Empujar piedra
 			if (juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna + 2] == LIBRE \
 				&& juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna + 1] == PIEDRA) {
-				int fila = juego.estadoMina.fila, columna = juego.estadoMina.columna + 2;
-				do {
-					fila++;
-				} while (juego.estadoMina.planoMina[fila][columna] == LIBRE && fila < juego.estadoMina.nFilas - 1);
-
-				juego.estadoMina.planoMina[fila][columna] = PIEDRA;
+				gravedadHorizontal(juego, juego.estadoMina.columna + 2);
 			}
 
 			juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna] = LIBRE;
 
+			// Gravedad piedra
 			if (juego.estadoMina.planoMina[juego.estadoMina.fila - 1][juego.estadoMina.columna] == PIEDRA) {
-				int filaPiedra = juego.estadoMina.fila - 1, colPiedra = juego.estadoMina.columna;
-				do {
-					filaPiedra++;
-				} while (juego.estadoMina.planoMina[filaPiedra][colPiedra] == LIBRE && filaPiedra < juego.estadoMina.nFilas);
-				
-				juego.estadoMina.planoMina[juego.estadoMina.fila - 1][juego.estadoMina.columna] = LIBRE;
-				juego.estadoMina.planoMina[filaPiedra - 1][colPiedra] = PIEDRA;
+				gravedadVertical(juego, juego.estadoMina.fila - 1);
 			}
 
 			if (juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna + 1] == GEMA) {
@@ -256,26 +249,17 @@ void movimientoIzquierda(tJuego& juego) {
 			|| juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna - 1] == LIBRE \
 			|| juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna - 1] == TIERRA \
 			|| juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna - 1] == GEMA) {
+			// Gravedad horizontal
 			if (juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna - 2] == LIBRE \
 				&& juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna - 1] == PIEDRA) {
-				int fila = juego.estadoMina.fila, columna = juego.estadoMina.columna - 2;
-				do {
-					fila++;
-				} while (juego.estadoMina.planoMina[fila][columna] == LIBRE && fila < juego.estadoMina.nFilas - 1);
-
-				juego.estadoMina.planoMina[fila][columna] = PIEDRA;
+				gravedadHorizontal(juego, juego.estadoMina.columna - 2);
 			}
 
 			juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna] = LIBRE;
 
+			// Gravedad piedra
 			if (juego.estadoMina.planoMina[juego.estadoMina.fila - 1][juego.estadoMina.columna] == PIEDRA) {
-				int filaPiedra = juego.estadoMina.fila - 1, colPiedra = juego.estadoMina.columna;
-				do {
-					filaPiedra++;
-				} while (juego.estadoMina.planoMina[filaPiedra][colPiedra] == LIBRE && filaPiedra < juego.estadoMina.nFilas);
-
-				juego.estadoMina.planoMina[juego.estadoMina.fila - 1][juego.estadoMina.columna] = LIBRE;
-				juego.estadoMina.planoMina[filaPiedra - 1][colPiedra] = PIEDRA;
+				gravedadVertical(juego, juego.estadoMina.fila - 1);
 			}
 
 			if (juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna - 1] == GEMA) {
@@ -373,4 +357,32 @@ char enumToChar(tCasilla t) {
 void cambiarColor(int fondo){
 	HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleTextAttribute(handle, 15 | (fondo << 4));
+}
+
+
+void gravedadHorizontal(tJuego &juego, int columna) {
+	int fila = juego.estadoMina.fila;
+
+	do {
+		fila++;
+	} while (juego.estadoMina.planoMina[fila][columna] == LIBRE && fila < juego.estadoMina.nFilas - 1);
+
+	juego.estadoMina.planoMina[fila][columna] = PIEDRA;
+}
+
+
+void gravedadVertical(tJuego &juego, int fila) {
+	if ((juego.estadoMina.planoMina[fila][juego.estadoMina.columna] == PIEDRA \
+		|| juego.estadoMina.planoMina[fila][juego.estadoMina.columna] == GEMA) && fila >= 0) {
+		int columna = juego.estadoMina.columna, posPiedra = fila;
+
+		do {
+			posPiedra++;
+		} while (juego.estadoMina.planoMina[posPiedra][columna] == LIBRE && posPiedra < juego.estadoMina.nFilas);
+
+		juego.estadoMina.planoMina[fila][juego.estadoMina.columna] = LIBRE;
+		juego.estadoMina.planoMina[posPiedra - 1][columna] = PIEDRA;
+
+		gravedadVertical(juego, fila - 1);
+	}
 }

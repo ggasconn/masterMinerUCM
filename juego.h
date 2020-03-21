@@ -102,4 +102,20 @@ char enumToChar(tCasilla t);
 */
 void cambiarColor(int fondo = 0);
 
+
+/*
+* TODO
+*
+* @param juego, datos completos del juego
+*/
+void gravedadVertical(tJuego& juego, int fila);
+
+
+/*
+* TODO
+*
+* @param juego, datos completos del juego
+*/
+void gravedadHorizontal(tJuego& juego, int columna);
+
 #endif	//Fin codigo modulo juego
