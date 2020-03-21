@@ -26,14 +26,14 @@ int main() {
 					if (juego.siguienteNivel && nivel < 4) {
 						opcion = menuSiguienteNivel();
 
-						if (opcion == 1) {
-							nivel++;
-						}
-						else {
+						if (opcion == 0) {
 							juego.gameOver = true;
 						}
 					}
-					
+
+					/* Necesario incrementarlo aunque no se siga jugando, porque si se acaba el juego porque 
+					*  no hay mas niveles en necesario que nivel valga mas que 4 para romper el bucle exterior */
+					nivel++;
 					break;
 
 				case 2:

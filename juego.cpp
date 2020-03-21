@@ -170,6 +170,7 @@ void movimientoArriba(tJuego& juego) {
 		if (juego.estadoMina.planoMina[juego.estadoMina.fila - 1][juego.estadoMina.columna] == LIBRE \
 			|| juego.estadoMina.planoMina[juego.estadoMina.fila - 1][juego.estadoMina.columna] == TIERRA \
 			|| juego.estadoMina.planoMina[juego.estadoMina.fila - 1][juego.estadoMina.columna] == GEMA) {
+			// Sumar si es gema
 			if (juego.estadoMina.planoMina[juego.estadoMina.fila - 1][juego.estadoMina.columna] == GEMA) {
 				juego.gemas++;
 			}
@@ -191,11 +192,18 @@ void movimientoAbajo(tJuego& juego) {
 		if (juego.estadoMina.planoMina[juego.estadoMina.fila + 1][juego.estadoMina.columna] == LIBRE \
 			|| juego.estadoMina.planoMina[juego.estadoMina.fila + 1][juego.estadoMina.columna] == TIERRA \
 			|| juego.estadoMina.planoMina[juego.estadoMina.fila + 1][juego.estadoMina.columna] == GEMA) {
+
 			if (juego.estadoMina.planoMina[juego.estadoMina.fila + 1][juego.estadoMina.columna] == GEMA) {
 				juego.gemas++;
 			}
 
 			juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna] = LIBRE;
+
+			// Gravedad piedra
+			if (juego.estadoMina.planoMina[juego.estadoMina.fila - 1][juego.estadoMina.columna] == PIEDRA) {
+				gravedadVertical(juego, juego.estadoMina.fila - 1);
+			}
+
 			juego.estadoMina.fila++;
 			juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna] = MINERO;
 		}
@@ -354,7 +362,7 @@ char enumToChar(tCasilla t) {
 }
 
 
-void cambiarColor(int fondo){
+void cambiarColor(int fondo) {
 	HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleTextAttribute(handle, 15 | (fondo << 4));
 }
