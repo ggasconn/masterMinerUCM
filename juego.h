@@ -69,7 +69,7 @@ void movimientoArriba(tJuego& juego);
 void movimientoAbajo(tJuego& juego);
 void movimientoDerecha(tJuego& juego);
 void movimientoIzquierda(tJuego& juego);
-
+void lanzarDinamita(tJuego& juego);
 
 /*
 * TODO
