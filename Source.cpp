@@ -23,7 +23,7 @@ int main() {
 						hacerMovimiento(juego, leerTecla());
 					} while (!juego.siguienteNivel && !juego.gameOver);
 
-					if (juego.siguienteNivel && nivel < 4) {
+					if (juego.siguienteNivel && nivel < 4 && !juego.gameOver) {
 						opcion = menuSiguienteNivel();
 
 						if (opcion == 0) {

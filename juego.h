@@ -64,6 +64,7 @@ tTecla leerTecla();
 * @param tecla, tecla pulsada clasificada previamente
 */
 bool hacerMovimiento(tJuego &juego, tTecla tecla);
+void movimientoHorizontal(tJuego& juego, int siguienteColumna, int segundaColumna);
 
 void movimientoArriba(tJuego& juego);
 void movimientoAbajo(tJuego& juego);

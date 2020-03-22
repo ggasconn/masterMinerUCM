@@ -141,11 +141,19 @@ bool hacerMovimiento(tJuego& juego, tTecla tecla) {
 
 		case DCHA:
 			movimientoDerecha(juego);
+			/*if (juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna + 1] != MURO && juego.estadoMina.columna + 1 < juego.estadoMina.nColumnas) {
+				movimientoHorizontal(juego, juego.estadoMina.columna + 1, juego.estadoMina.columna + 2);
+				juego.estadoMina.columna++;
+			}*/
 			realizado = true;
 			break;
 
 		case IZQA:
 			movimientoIzquierda(juego);
+			/*if (juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna - 1] != MURO && juego.estadoMina.columna - 1 >= 0) {
+				movimientoHorizontal(juego, juego.estadoMina.columna - 1, juego.estadoMina.columna - 2);
+				juego.estadoMina.columna--;
+			}*/
 			realizado = true;
 			break;
 
@@ -206,6 +214,42 @@ void movimientoAbajo(tJuego& juego) {
 		else if (juego.estadoMina.planoMina[juego.estadoMina.fila + 1][juego.estadoMina.columna] == SALIDA) {
 			juego.siguienteNivel = true;
 		}
+	}
+	juego.nMovimientos++;
+}
+
+
+void movimientoHorizontal(tJuego& juego, int siguienteColumna, int segundaColumna) {
+	if (juego.estadoMina.planoMina[juego.estadoMina.fila][siguienteColumna] == LIBRE || juego.estadoMina.planoMina[juego.estadoMina.fila][siguienteColumna] == TIERRA || juego.estadoMina.planoMina[juego.estadoMina.fila][siguienteColumna] == GEMA) {
+		// Sumar gemas si hay
+		if (juego.estadoMina.planoMina[juego.estadoMina.fila][siguienteColumna] == GEMA) {
+			juego.gemas++;
+		}
+
+		juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna] = LIBRE;
+
+		// Gravedad piedra
+		if (juego.estadoMina.planoMina[juego.estadoMina.fila - 1][juego.estadoMina.columna] == PIEDRA) {
+			gravedadVertical(juego, juego.estadoMina.fila - 1);
+		}
+
+		juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna] = MINERO;
+	}
+	else if (juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna + 2] == LIBRE && juego.estadoMina.planoMina[juego.estadoMina.fila][siguienteColumna] == PIEDRA) {
+		// Empujar piedra
+		gravedadHorizontal(juego, segundaColumna);
+
+		juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna] = LIBRE;
+
+		// Gravedad piedra
+		if (juego.estadoMina.planoMina[juego.estadoMina.fila - 1][juego.estadoMina.columna] == PIEDRA) {
+			gravedadVertical(juego, juego.estadoMina.fila - 1);
+		}
+
+		juego.estadoMina.planoMina[juego.estadoMina.fila][juego.estadoMina.columna] = MINERO;
+	}
+	else if (juego.estadoMina.planoMina[juego.estadoMina.fila][siguienteColumna] == SALIDA) {
+		juego.siguienteNivel = true;
 	}
 	juego.nMovimientos++;
 }
