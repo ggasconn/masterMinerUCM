@@ -37,6 +37,7 @@ typedef int tPlanoColores[3 * MAX][3 * MAX];
 */
 void cargarMina(ifstream& fichero, tMina& mina);
 
+
 /*
 * Dibuja el tablero en escala 1:1
 *
@@ -44,12 +45,14 @@ void cargarMina(ifstream& fichero, tMina& mina);
 */
 void dibujar1_1(const tMina& mina);
 
+
 /*
 * Dibuja el tablero en escala 1:3
 *
 * @param mina, struct con la matriz de la mina y datos necesarios
 */
 void dibujar1_3(const tMina& mina);
+
 
 /*
 * Mete en la coordenada ixj el caracter y el color acorde al tipo de casilla que le llega
@@ -62,6 +65,7 @@ void dibujar1_3(const tMina& mina);
 */
 void dibujar3x3(tCasilla casilla, tPlanoCaracteres caracteres, tPlanoColores colores, int i, int j);
 
+
 /*
 * HELPER. Devuelve el codigo de color de fondo acorde al caracter
 *
@@ -69,12 +73,12 @@ void dibujar3x3(tCasilla casilla, tPlanoCaracteres caracteres, tPlanoColores col
 */
 int colorCaracter(char c);
 
+
 /*
 * HELPER. Devuelve el codigo de color de fondo acorde al tipo de la casilla
 *
 * @param c, caracter a colorear
 */
 int colorCasilla(tCasilla c);
-
 
 #endif	//Fin codigo modulo mina

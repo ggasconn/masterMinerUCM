@@ -33,6 +33,23 @@ typedef struct {
 */
 bool cargarJuego(tJuego& juego, int nivel);
 
+
+/*
+* Juega una partida con movimientos cargados desde un fichero
+*
+* @param juego, matriz con los datos del juego
+*/
+bool cargarMovimientos(tJuego& juego);
+
+
+/*
+* Comprueba en que escala se esta jugando y dibuja el plano en consecuencia
+*
+* @param juego, matriz con los datos del juego
+*/
+void dibujar(const tJuego& juego);
+
+
 /*
 * Menu para elegir el modo de juego
 */
@@ -58,26 +75,69 @@ tTecla leerTecla();
 
 
 /*
-* TODO
+* Clasifica el movimiento que recibe y realiza la accion acorde
 *
 * @param juego, matriz con los datos del juego
 * @param tecla, tecla pulsada clasificada previamente
 */
 bool hacerMovimiento(tJuego &juego, tTecla tecla);
-void movimientoHorizontal(tJuego& juego, int siguienteColumna, int segundaColumna);
 
+
+/*
+* Ejecutan el movimiento elegido
+*
+* @param juego, matriz con los datos del juego
+* @param tecla, tecla pulsada clasificada previamente
+*/
 void movimientoArriba(tJuego& juego);
 void movimientoAbajo(tJuego& juego);
 void movimientoDerecha(tJuego& juego);
 void movimientoIzquierda(tJuego& juego);
-void lanzarDinamita(tJuego& juego);
+
 
 /*
-* TODO
+* Lanza una dinamita en vertical y cae en la ultima posicion libre. Luego explota en un patron 3x3
 *
 * @param juego, matriz con los datos del juego
 */
-void dibujar(const tJuego& juego);
+void lanzarDinamita(tJuego& juego);
+
+
+/*
+* Emula la gravedad, busca la ultima posicion libre en vertical donde puede caer el objeto
+*
+* @param juego, datos completos del juego
+* @param fila, fila en la que se encuentra el objeto
+*/
+void gravedadVertical(tJuego& juego, int fila);
+
+
+/*
+* Emula la gravedad, busca la ultima fila a la que puede caer el objeto
+*
+* @param juego, datos completos del juego
+* @param columna, columna en la que se encuentra el objeto
+*/
+void gravedadHorizontal(tJuego& juego, int columna);
+
+
+/*
+* Emula la gravedad, busca la ultima posicion libre en vertical donde puede caer el objeto.
+* Parecida a la funcion gravedadVertical, pero esta acepta una columna concreta
+*
+* @param juego, datos completos del juego
+* @param fila, fila en la que se encuentra el objeto
+* @param columna, columna en la que se encuentra el objeto
+*/
+void gravedadDinamita(tJuego& juego, int fila, int columna);
+
+
+/*
+* HELPER. Cambiar el color de fondo de la consola. 0 vuelve a negro.
+*
+* @param fondo, color con el que se dibujara el fondo
+*/
+void cambiarColor(int fondo = 0);
 
 
 /*
@@ -91,32 +151,8 @@ tCasilla charToEnum(char c);
 /*
 * HELPER. Convierte un dato del tipo tCasilla a su respectivo char
 *
-* @param c, caracter a convertir en tipo enumerado
+* @param t, casilla del tipo enumerado a convertir en caracter
 */
 char enumToChar(tCasilla t);
-
-
-/*
-* HELPER. Cambiar el color de fondo de la consola. 0 vuelve a negro.
-*
-* @param fondo, color con el que se dibujara el fondo
-*/
-void cambiarColor(int fondo = 0);
-
-
-/*
-* TODO
-*
-* @param juego, datos completos del juego
-*/
-void gravedadVertical(tJuego& juego, int fila);
-
-
-/*
-* TODO
-*
-* @param juego, datos completos del juego
-*/
-void gravedadHorizontal(tJuego& juego, int columna);
 
 #endif	//Fin codigo modulo juego

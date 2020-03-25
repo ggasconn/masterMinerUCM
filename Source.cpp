@@ -37,7 +37,7 @@ int main() {
 					break;
 
 				case 2:
-					//Codificar jugada por fichero
+					cargarMovimientos(juego);
 					break;
 
 				case 0:
