@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <iomanip>
 
 #include "puntuaciones.h"
 
@@ -71,6 +72,14 @@ bool guardarMarcador(tPuntuaciones& marcador) {
 				fichero << marcador.arrayClasificacion[i].vMinasRecorridas[j].numDinamitas;
 				fichero << marcador.arrayClasificacion[i].vMinasRecorridas[j].puntosMina;
 			}
+
+			for (int k = marcador.arrayClasificacion[i].minasRecorridas; k < 5; k++) {
+				marcador.arrayClasificacion[i].vMinasRecorridas[k].idMina = 0;
+				marcador.arrayClasificacion[i].vMinasRecorridas[k].numMovimientos = 0;
+				marcador.arrayClasificacion[i].vMinasRecorridas[k].numGemas = 0;
+				marcador.arrayClasificacion[i].vMinasRecorridas[k].numDinamitas = 0;
+				marcador.arrayClasificacion[i].vMinasRecorridas[k].puntosMina = 0;
+			}
 		}
 
 		fichero << "000";
@@ -85,14 +94,43 @@ bool guardarMarcador(tPuntuaciones& marcador) {
 
 
 void mostrarMinasUsuario(const tPuntuaciones& marcador, int cont) {
+	cout << setw(12) << endl << marcador.arrayClasificacion[cont].nombre;
+	cout << setw(15) << " Movimientos";
+	cout << setw(8) << "Gemas";
+	cout << setw(12) << "Dinamitas";
+	cout << setw(10) << "Puntos";
+	cout << setw(18) << "Puntos en total" << endl;
+
+	for (int i = 0; i < marcador.arrayClasificacion[cont].minasRecorridas; i++) {
+		cout << setw(9) << "Mina " << marcador.arrayClasificacion[cont].vMinasRecorridas[i].idMina << " ";
+		cout << setw(13) << marcador.arrayClasificacion[cont].vMinasRecorridas[i].numMovimientos << " ";
+		cout << setw(8) << marcador.arrayClasificacion[cont].vMinasRecorridas[i].numGemas << " ";
+		cout << setw(9) << marcador.arrayClasificacion[cont].vMinasRecorridas[i].numDinamitas << " ";
+		cout << setw(11) << marcador.arrayClasificacion[cont].vMinasRecorridas[i].puntosMina << " ";
+		cout << setw(14) << marcador.arrayClasificacion[cont].vMinasRecorridas[i].puntosMina << endl;
+	}
 }
 
 
 void mostrarAlfabetico(const tPuntuaciones& marcador) {
+	cout << setw(40) << endl << "-----  LISTA DE JUGADORES  -----" << endl << endl;
+
+	for (int i = 0; i < marcador.numJugadores; i++) {
+		cout << setw(30) << marcador.arrayClasificacion[i].nombre << " ";
+		cout << marcador.arrayClasificacion[i].puntTotal << endl;
+	}
+
+	cout << endl;
 }
 
 
 void mostrarDatosUsuario(const tPuntuaciones& marcador) {
+	cout << setw(60) << "-----  JUGADORES ORDENADOS POR NOMBRE  -----" << endl;
+
+	for (int i = 0; i < marcador.numJugadores; i++) {
+		mostrarMinasUsuario(marcador, i);
+		cout << endl;
+	}
 }
 
 
@@ -109,7 +147,7 @@ void aumentarCapacidad(tPuntuaciones& marcador) {
 	tPuntuacionJugador* newArr = new tPuntuacionJugador[2 * marcador.capacidad];
 
 	for (int i = 0; i < marcador.capacidad; i++) {
-		marcador.arrayClasificacion[i] = newArr[i];
+		newArr[i] = marcador.arrayClasificacion[i];
 	}
 
 	delete [] marcador.arrayClasificacion;
@@ -164,4 +202,14 @@ void insertar(tPuntuaciones& marcador, string const& nombre, int pos) {
 	marcador.arrayClasificacion[pos].minasRecorridas = 0;
 	marcador.arrayClasificacion[pos].puntTotal = 0;
 	marcador.arrayClasificacion[pos].nombre = nombre;
+
+	for (int i = 0; i < 5; i++) {
+		marcador.arrayClasificacion[pos].vMinasRecorridas[i].idMina = 0;
+		marcador.arrayClasificacion[pos].vMinasRecorridas[i].numMovimientos = 0;
+		marcador.arrayClasificacion[pos].vMinasRecorridas[i].numGemas = 0;
+		marcador.arrayClasificacion[pos].vMinasRecorridas[i].numDinamitas = 0;
+		marcador.arrayClasificacion[pos].vMinasRecorridas[i].puntosMina = 0;
+	}
+
+	marcador.numJugadores++;
 }
