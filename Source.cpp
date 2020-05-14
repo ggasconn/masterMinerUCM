@@ -2,13 +2,23 @@
 
 #include "mina.h"
 #include "juego.h"
+#include "puntuaciones.h"
 
 using namespace std;
 
 int main() {
+	tPuntuaciones marcador;
+	inicializarMarcador(marcador);
+	cargarMarcador(marcador);
+
+	for (int i = 0; i < marcador.numJugadores; i++) {
+		cout << marcador.arrayClasificacion[i].nombre << endl;
+	}
+
 	tJuego juego;
 	short int nivel = 1;
 	int opcion = -1;
+
 
 	do {
 		if (!cargarJuego(juego, nivel)) {
