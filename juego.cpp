@@ -516,3 +516,12 @@ char enumToChar(tCasilla t) {
 
 	return output;
 }
+
+
+void reiniciarJuego(tJuego& juego) {
+	juego.gameOver = false;
+	juego.siguienteNivel = false;
+	juego.gemas = 0;
+	juego.nDinamitas = 0;
+	juego.nMovimientos = 0;
+}

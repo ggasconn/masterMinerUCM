@@ -155,4 +155,12 @@ tCasilla charToEnum(char c);
 */
 char enumToChar(tCasilla t);
 
+
+/*
+* Reinicia todos los valores del juego a su valor inicial
+*
+* @param juego, struct con los datos del juego
+*/
+void reiniciarJuego(tJuego& juego);
+
 #endif	//Fin codigo modulo juego

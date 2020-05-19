@@ -11,7 +11,6 @@ using namespace std;
 
 // Definicion de nuevos tipos de datos
 
-const int NUM_TOTAL_PLAYERS = 25;
 const int NUM_TOTAL_MINAS = 5;
 
 const short int A = 10;

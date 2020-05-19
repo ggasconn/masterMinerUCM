@@ -21,8 +21,7 @@ int main() {
 	inicializarPuntuaciones(marcador, nombreJugador, pos);
 
 	do {
-		juego.gameOver = false;
-		juego.siguienteNivel = false;
+		reiniciarJuego(juego);	// Pone los valores del struct del juego a los valores por defecto
 
 		do {
 			cout << endl << nombreJugador << ", ¿Qué mina quieres explorar?" << endl;
