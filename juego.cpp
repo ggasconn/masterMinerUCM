@@ -359,7 +359,7 @@ void movimientoIzquierda(tJuego& juego) {
 
 
 void lanzarDinamita(tJuego& juego) {
-	int columna = juego.estadoMina.columna, fila = juego.estadoMina.fila;
+	int columna = juego.estadoMina.columna, fila = juego.estadoMina.fila, filaMinero = juego.estadoMina.fila;
 
 	do {
 		fila++;
@@ -371,7 +371,7 @@ void lanzarDinamita(tJuego& juego) {
 
 	for (int i = fila - 2; i < fila + 1; i++) {
 		for (int j = columna - 1; j < columna + 2; j++) {
-			if (juego.estadoMina.planoMina[i][j] == MINERO) {
+			if (i == filaMinero && j == columna) {
 				juego.gameOver = true;
 				juego.siguienteNivel = true;
 			}
