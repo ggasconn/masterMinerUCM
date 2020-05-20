@@ -166,24 +166,21 @@ void destruir(tPuntuaciones& marcador) {
 }
 
 
-bool buscar(const string& nombre, const tPuntuaciones& marcador, int& pos) {
-	int ini = 0, fin = marcador.capacidad - 1, mitad;
-	bool encontrado = false;
+void buscar(const string& nombre, const tPuntuaciones& marcador, int& pos, int ini, int fin, bool& encontrado) {
+	int mitad;
 
-	do {
-		mitad = (ini + fin) / 2; // División entera
-		if (nombre == marcador.arrayClasificacion[mitad].nombre)
+	mitad = (ini + fin) / 2;
+
+	if (ini <= fin) {
+		if (nombre == marcador.arrayClasificacion[mitad].nombre) {
 			encontrado = true;
+			pos = mitad;
+		}
 		else if (nombre < marcador.arrayClasificacion[mitad].nombre)
-			fin = mitad - 1;
+			buscar(nombre, marcador, pos, ini, mitad - 1, encontrado);
 		else
-			ini = mitad + 1;
-	} while ((ini <= fin) && !encontrado);
-
-	if (encontrado)
-		pos = mitad;
-
-	return encontrado;
+			buscar(nombre, marcador, pos, mitad + 1, fin, encontrado);
+	}
 }
 
 
@@ -215,6 +212,7 @@ void insertar(tPuntuaciones& marcador, string const& nombre, int pos) {
 	ordenarNombres(marcador);
 }
 
+
 void ordenarNombres(tPuntuaciones& marcador) {
 	tPuntuacionJugador temp;
 
@@ -228,6 +226,7 @@ void ordenarNombres(tPuntuaciones& marcador) {
 		}
 	}
 }
+
 
 void ordenarMinas(tPuntuacionJugador& jugador) {
 	tDatosMina temp;
@@ -243,7 +242,10 @@ void ordenarMinas(tPuntuacionJugador& jugador) {
 	}
 }
 
+
 void inicializarPuntuaciones(tPuntuaciones& marcador, string& nombreJugador, int& pos) {
+	bool encontrado = false;
+
 	inicializarMarcador(marcador);
 	cargarMarcador(marcador);
 
@@ -251,12 +253,13 @@ void inicializarPuntuaciones(tPuntuaciones& marcador, string& nombreJugador, int
 	cout << setw(50) << "Introduce tu nombre de jugador/a: ";
 	cin >> nombreJugador;
 
-	if (buscar(nombreJugador, marcador, pos)) {
+	buscar(nombreJugador, marcador, pos, 0, marcador.numJugadores, encontrado);
+
+	if (encontrado) {
 		cout << endl << setw(35) << "Ya estás registrado/a." << endl << endl;
 		cout << setw(66) << "Mira las minas que has recorrido ordenadas por nivel." << endl;
 		mostrarMinasUsuario(marcador, pos);
-	}
-	else {
+	}else {
 		cout << endl << setw(21) << "Eres nuevo/a: " << nombreJugador << endl << endl;
 		cout << setw(52) << "Mira las puntuaciones de los otros jugadores." << endl;
 		mostrarAlfabetico(marcador);

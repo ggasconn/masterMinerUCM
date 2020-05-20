@@ -45,6 +45,8 @@ typedef struct {
 * Carga los datos del fichero puntuaciones.txt al array dinamico.
 *
 * @param marcador, array dinamico conteniendo todos los jugadores y sus puntuaciones
+*
+* @return bool, true si se ha podido cargar el marcador false en caso contrario
 */
 bool cargarMarcador(tPuntuaciones& marcador);
 
@@ -52,6 +54,8 @@ bool cargarMarcador(tPuntuaciones& marcador);
 * Guarda los datos del array dinamico en el fichero puntuaciones.txt
 *
 * @param marcador, array dinamico conteniendo todos los jugadores y sus puntuaciones
+*
+* @return bool, true si se ha podido guardar el marcador false en caso contrario
 */
 bool guardarMarcador(tPuntuaciones& marcador);
 
@@ -101,13 +105,16 @@ void aumentarCapacidad(tPuntuaciones& marcador);
 void destruir(tPuntuaciones& marcador);
 
 /*
-* Busca en el array el nombre del jugador, si lo encuentra en pos estará el indice.
+* Busca recursivamente en el array el nombre del jugador, si lo encuentra en pos estará el indice.
 *
 * @param nombre, nombre del jugador que se va a buscar en el array
 * @param marcador, array dinamico conteniendo todos los jugadores y sus puntuaciones
 * @param pos, devuelve la posicion en la que se encuentra el jugador dentro del array
+* @param ini, posicion inicial de la lista desde la que se busca. Inicia en 0
+* @param fin, posicion final de la lista hasta la que se busca. Empieza con la longitud completa
+* @param encontrado, true si se ha encontrado el nombre. Necesario para deshacer la recursion y no perder el valor.
 */
-bool buscar(const string& nombre, const tPuntuaciones& marcador, int& pos);
+void buscar(const string& nombre, const tPuntuaciones& marcador, int& pos, int ini, int fin, bool& encontrado);
 
 /*
 * Inserta un nuevo jugador en el array dinamico.

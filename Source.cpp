@@ -1,3 +1,10 @@
+/*
+* EXTRAS REALIZADOS:
+*	- Funcion de busqueda con algoritmo de busqueda binaria recursiva
+*	- Funcion para ordenar el array dinamico, tanto las minas como los nombres
+*	- Funcion inicializarPuntuaciones, hace todo lo necesario para inicializar el marcador y asi liberar codigo de main
+*	- Metodos de las librerias comentados con el estandar Descriptive Blocks ampliamente conocido y usado en entornos de trabajo
+*/
 #include <iostream>
 #include <iomanip>
 #include <locale>
@@ -14,6 +21,7 @@ int main() {
 	string nombreJugador;
 	short int nivel = 1;
 	int pos = -1, op = -1, opcion = -1;
+	bool encontrado = false;
 
 	setlocale(LC_ALL, "");
 
@@ -53,7 +61,7 @@ int main() {
 
 				// Si el nivel se ha terminado con exito se actualiza o guarda la puntuacion
 				if (juego.siguienteNivel && !juego.gameOver) {
-					buscar(nombreJugador, marcador, pos);
+					buscar(nombreJugador, marcador, pos, 0, marcador.numJugadores, encontrado);
 
 					if (marcador.arrayClasificacion[pos].vMinasRecorridas[op - 1].numMovimientos == 0)
 						marcador.arrayClasificacion[pos].minasRecorridas++;
