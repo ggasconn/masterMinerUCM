@@ -63,16 +63,16 @@ int main() {
 				if (juego.siguienteNivel && !juego.gameOver) {
 					buscar(nombreJugador, marcador, pos, 0, marcador.numJugadores, encontrado);
 
-					if (marcador.arrayClasificacion[pos].vMinasRecorridas[op - 1].numMovimientos == 0)
+					if (marcador.arrayClasificacion[pos].vMinasRecorridas[marcador.arrayClasificacion[pos].minasRecorridas].numMovimientos == 0)
 						marcador.arrayClasificacion[pos].minasRecorridas++;
 
-					marcador.arrayClasificacion[pos].vMinasRecorridas[op - 1].idMina = op;
-					marcador.arrayClasificacion[pos].vMinasRecorridas[op - 1].numDinamitas = juego.nDinamitas;
-					marcador.arrayClasificacion[pos].vMinasRecorridas[op - 1].numMovimientos = juego.nMovimientos;
-					marcador.arrayClasificacion[pos].vMinasRecorridas[op - 1].numGemas = juego.gemas;
-					marcador.arrayClasificacion[pos].vMinasRecorridas[op - 1].puntosMina = \
+					marcador.arrayClasificacion[pos].vMinasRecorridas[marcador.arrayClasificacion[pos].minasRecorridas - 1].idMina = op;
+					marcador.arrayClasificacion[pos].vMinasRecorridas[marcador.arrayClasificacion[pos].minasRecorridas - 1].numDinamitas = juego.nDinamitas;
+					marcador.arrayClasificacion[pos].vMinasRecorridas[marcador.arrayClasificacion[pos].minasRecorridas - 1].numMovimientos = juego.nMovimientos;
+					marcador.arrayClasificacion[pos].vMinasRecorridas[marcador.arrayClasificacion[pos].minasRecorridas - 1].numGemas = juego.gemas;
+					marcador.arrayClasificacion[pos].vMinasRecorridas[marcador.arrayClasificacion[pos].minasRecorridas - 1].puntosMina = \
 						juego.estadoMina.nColumnas * juego.estadoMina.nFilas + A * juego.gemas - juego.nMovimientos - B * juego.nDinamitas;
-					marcador.arrayClasificacion[pos].puntTotal += marcador.arrayClasificacion[pos].vMinasRecorridas[op - 1].puntosMina;
+					marcador.arrayClasificacion[pos].puntTotal += marcador.arrayClasificacion[pos].vMinasRecorridas[marcador.arrayClasificacion[pos].minasRecorridas - 1].puntosMina;
 
 					ordenarMinas(marcador.arrayClasificacion[pos]);
 				}
@@ -80,8 +80,7 @@ int main() {
 		}
 
 		system("cls");
-		cout << setw(66) << endl << "Mira las minas que has recorrido ordenadas por nivel." << endl;
-		mostrarMinasUsuario(marcador, pos);
+		mostrarDatosUsuario(marcador);
 	} while (op != 0);
 	
 	guardarMarcador(marcador);	// Volcado del array dinamico al fichero
