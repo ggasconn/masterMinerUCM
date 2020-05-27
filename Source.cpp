@@ -1,53 +1,90 @@
+/*
+* EXTRAS REALIZADOS:
+*	- Funcion de busqueda con algoritmo de busqueda binaria recursiva
+*	- Funcion para ordenar el array dinamico, tanto las minas como los nombres
+*	- Funcion inicializarPuntuaciones, hace todo lo necesario para inicializar el marcador y asi liberar codigo de main
+*	- Metodos de las librerias comentados con el estandar Descriptive Blocks ampliamente conocido y usado en entornos de trabajo
+*/
 #include <iostream>
+#include <iomanip>
+#include <locale>
 
 #include "mina.h"
 #include "juego.h"
+#include "puntuaciones.h"
 
 using namespace std;
 
 int main() {
 	tJuego juego;
+	tPuntuaciones marcador;
+	string nombreJugador;
 	short int nivel = 1;
-	int opcion = -1;
+	int pos = -1, op = -1, opcion = -1;
+	bool encontrado = false;
+
+	setlocale(LC_ALL, "");
+
+	// Inicializa array dinamico, pregunta por el jugador y muestra estadisticas
+	inicializarPuntuaciones(marcador, nombreJugador, pos);
 
 	do {
-		if (!cargarJuego(juego, nivel)) {
-			juego.gameOver = true;
-		}else {
-			opcion = menuMovimientos();
+		reiniciarJuego(juego);	// Pone los valores del struct del juego a los valores por defecto
 
-			switch (opcion) {
-				case 1:
-					do {
-						dibujar(juego);
-						hacerMovimiento(juego, leerTecla());
-					} while (!juego.siguienteNivel && !juego.gameOver);
+		do {
+			cout << endl << nombreJugador << ", ¿Qué mina quieres explorar?" << endl;
+			cout << "Introduce un numero entre 1 y 5 para explorar una mina y 0 para salir: ";
+			cin >> op;
+		} while (op < 0 || op > 5);
 
-					if (juego.siguienteNivel && nivel < 4 && !juego.gameOver) {
-						opcion = menuSiguienteNivel();
+		if (! op == 0) {
+			if (cargarJuego(juego, op)) {
+				opcion = menuMovimientos();	// Pregunta como se quiere jugar
 
-						if (opcion == 0) {
-							juego.gameOver = true;
-						}
-					}
+				switch (opcion) {
+					case 1:
+						do {
+							dibujar(juego);
+							hacerMovimiento(juego, leerTecla());
+						} while (!juego.siguienteNivel && !juego.gameOver);
 
-					/* Necesario incrementarlo aunque no se siga jugando, porque si se acaba el juego porque 
-					*  no hay mas niveles en necesario que nivel valga mas que 4 para romper el bucle exterior */
-					nivel++;
-					break;
+						break;
 
-				case 2:
-					cargarMovimientos(juego);
-					break;
+					case 2:
+						cargarMovimientos(juego);
+						break;
 
-				case 0:
-					juego.gameOver = true;
-					break;
+					case 0:
+						op = 0;
+						break;
+				}
+
+				// Si el nivel se ha terminado con exito se actualiza o guarda la puntuacion
+				if (juego.siguienteNivel && !juego.gameOver) {
+					buscar(nombreJugador, marcador, pos, 0, marcador.numJugadores, encontrado);
+
+					if (marcador.arrayClasificacion[pos].vMinasRecorridas[marcador.arrayClasificacion[pos].minasRecorridas].numMovimientos == 0)
+						marcador.arrayClasificacion[pos].minasRecorridas++;
+
+					marcador.arrayClasificacion[pos].vMinasRecorridas[marcador.arrayClasificacion[pos].minasRecorridas - 1].idMina = op;
+					marcador.arrayClasificacion[pos].vMinasRecorridas[marcador.arrayClasificacion[pos].minasRecorridas - 1].numDinamitas = juego.nDinamitas;
+					marcador.arrayClasificacion[pos].vMinasRecorridas[marcador.arrayClasificacion[pos].minasRecorridas - 1].numMovimientos = juego.nMovimientos;
+					marcador.arrayClasificacion[pos].vMinasRecorridas[marcador.arrayClasificacion[pos].minasRecorridas - 1].numGemas = juego.gemas;
+					marcador.arrayClasificacion[pos].vMinasRecorridas[marcador.arrayClasificacion[pos].minasRecorridas - 1].puntosMina = \
+						juego.estadoMina.nColumnas * juego.estadoMina.nFilas + A * juego.gemas - juego.nMovimientos - B * juego.nDinamitas;
+					marcador.arrayClasificacion[pos].puntTotal += marcador.arrayClasificacion[pos].vMinasRecorridas[marcador.arrayClasificacion[pos].minasRecorridas - 1].puntosMina;
+
+					ordenarMinas(marcador.arrayClasificacion[pos]);
+				}
 			}
 		}
-	} while (!juego.gameOver && nivel <= 4);
 
-	cout << endl << "G A M E   O V E R !" << endl;
-
+		system("cls");
+		mostrarDatosUsuario(marcador);
+	} while (op != 0);
+	
+	guardarMarcador(marcador);	// Volcado del array dinamico al fichero
+	destruir(marcador);	// Borrado del array dinamico
+	
 	return 0;
 }
